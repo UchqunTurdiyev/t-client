@@ -85,7 +85,7 @@ export default function Header() {
 						colorScheme={'facebook'}
 						variant={'outline'}
 					/>
-					<Link href={'/auth'}>
+					<Link href={'/signin'}>
 						<Button rightIcon={<FaUserGraduate />} colorScheme='facebook' variant={'outline'}>
 							{t('login', { ns: 'layout' })}
 						</Button>

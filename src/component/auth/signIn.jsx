@@ -1,7 +1,7 @@
 'use client';
 import { Box, Button, Flex, Heading, Image, Input, Text } from '@chakra-ui/react';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function SignIn() {
 	return (
@@ -20,8 +20,8 @@ export default function SignIn() {
 					<Flex flexDirection={'column'} gap={5}>
 						<Input type='email' placeholder='Email' />
 						<Input type='password' placeholder='Password' />
-						<Button colorScheme='facebook' variant={'solid'}>
-							Sign Up
+						<Button type='submit' colorScheme='facebook' variant={'solid'}>
+							Sign In
 						</Button>
 						<Text display={'flex'}>
 							Don't have an account?{' '}
