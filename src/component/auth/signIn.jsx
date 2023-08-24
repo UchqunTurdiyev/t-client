@@ -8,7 +8,7 @@ export default function SignIn() {
 		<Box w={'full'} h={'75vh'} bg={'gray.700'} px={20} py={10}>
 			<Heading textAlign='center'>Login</Heading>
 			<Flex flexDirection={{ md: 'row', sm: 'column' }} gap={6} w={'full'} h={'full'} mt={10} justifyContent={'space-between'}>
-				<Box w={'full'}>
+				<Box w={'70%'}>
 					<Image
 						w={'full'}
 						objectFit={'cover'}
@@ -20,7 +20,7 @@ export default function SignIn() {
 					<Flex flexDirection={'column'} gap={5}>
 						<Input type='email' placeholder='Email' />
 						<Input type='password' placeholder='Password' />
-						<Button type='submit' colorScheme='facebook' variant={'solid'}>
+						<Button type='submit' colorScheme='facebook' variant={'outline'}>
 							Sign In
 						</Button>
 						<Text display={'flex'}>

@@ -1,14 +1,30 @@
 'use client';
-import { Box, Button, Flex, Heading, Image, Input, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Image, Input, Text, useToast } from '@chakra-ui/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 export default function SignUp() {
 	const [regName, setRegName] = useState('');
 	const [regEmail, setRegEmail] = useState('');
 	const [regPassword, setRegPassword] = useState('');
+	const toast = useToast();
+	const router = useRouter();
 
 	const postData = () => {
+		if (
+			!/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(
+				regEmail
+			)
+		) {
+			toast({
+				title: "Email manzilingizni tog'ri kiriting",
+				status: 'error',
+				isClosable: true,
+				position: 'top-right',
+			});
+			return;
+		}
 		fetch('http://localhost:5000/signup', {
 			method: 'post',
 			headers: {
@@ -21,8 +37,26 @@ export default function SignUp() {
 			}),
 		})
 			.then(res => res.json())
-			.then(data => console.log(data));
+			.then(data => {
+				if (data.error) {
+					toast({
+						title: `${data.error} !`,
+						status: 'error',
+						isClosable: true,
+						position: 'top-right',
+					});
+				} else {
+					toast({
+						title: `${data.msg} .`,
+						status: 'success',
+						isClosable: true,
+						position: 'top-right',
+					});
+					router.push('/signin');
+				}
+			});
 	};
+
 	return (
 		<Box w={'full'} h={'75vh'} bg={'gray.700'} px={20} py={10}>
 			<Heading textAlign='center'>Register</Heading>
