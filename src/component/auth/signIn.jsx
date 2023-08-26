@@ -44,6 +44,8 @@ export default function SignIn() {
 						position: 'top-right',
 					});
 				} else {
+					localStorage.setItem('jwt', data.token);
+					localStorage.setItem('user', JSON.stringify(data.user));
 					toast({
 						title: 'Siz muvofaqiyatli royxatdan otdingiz',
 						status: 'success',
