@@ -20,10 +20,32 @@ import { MdGTranslate } from 'react-icons/md';
 import { BiMenuAltRight } from 'react-icons/bi';
 import { useTranslation } from 'react-i18next';
 import { language } from '@/config/constants';
+import { useContext } from 'react';
+import { UserContext } from '@/app/providers';
 
 export default function Header() {
 	const { toggleColorMode, colorMode } = useColorMode();
 	const { t, i18n } = useTranslation();
+	const { state } = useContext(UserContext);
+
+	const renderNav = () => {
+		if (state) {
+			if (state.email === 'uchqundev@gmail.com') {
+				return [
+					<>
+						<Link href={'/profile'}>{t('profile', { ns: 'layout' })}</Link>
+						<Link href={'/create-post'}>Maqola yozish</Link>
+					</>,
+				];
+			}
+		} else {
+			<Link href={'/signin'}>
+				<Button rightIcon={<FaUserGraduate />} colorScheme='facebook' variant={'outline'}>
+					{t('login', { ns: 'layout' })}
+				</Button>
+			</Link>;
+		}
+	};
 
 	const onLanguage = lng => {
 		i18n.changeLanguage(lng);
@@ -39,7 +61,7 @@ export default function Header() {
 			borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
 			shadow={'base'}
 		>
-			<Link href={'/'}>
+			<Link href={state ? '/' : 'signin'}>
 				{colorMode === 'light' ? (
 					<Image w={40} src={'https://6459153c9655650068ca2cb3--invest-in-school.netlify.app/dark_logo.png'} alt='logo' />
 				) : (
@@ -50,8 +72,7 @@ export default function Header() {
 				<Flex display={{ base: 'none', md: 'flex' }} gap={7}>
 					<Link href={'/'}>{t('home', { ns: 'layout' })}</Link>
 					<Link href={'/about'}>{t('about', { ns: 'layout' })}</Link>
-					<Link href={'/profile'}>{t('profile', { ns: 'layout' })}</Link>
-					<Link href={'/create-post'}>Maqola yozish</Link>
+					{renderNav()}
 					<Link href={'/'}>{t('contact', { ns: 'layout' })}</Link>
 				</Flex>
 				<HStack display={{ base: 'none', md: 'flex' }}>
@@ -85,11 +106,6 @@ export default function Header() {
 						colorScheme={'facebook'}
 						variant={'outline'}
 					/>
-					<Link href={'/signin'}>
-						<Button rightIcon={<FaUserGraduate />} colorScheme='facebook' variant={'outline'}>
-							{t('login', { ns: 'layout' })}
-						</Button>
-					</Link>
 				</HStack>
 				<Box display={{ base: 'block', md: 'none' }}>
 					<IconButton

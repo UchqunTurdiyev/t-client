@@ -1,10 +1,12 @@
 'use client';
+import { UserContext } from '@/app/providers';
 import { Box, Button, Flex, Heading, Image, Input, Text, useToast } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 export default function SignIn() {
+	const { state, dispatch } = useContext(UserContext);
 	const [logEmail, setLogEmail] = useState('');
 	const [logPassword, setLogPassword] = useState('');
 	const toast = useToast();
@@ -46,6 +48,7 @@ export default function SignIn() {
 				} else {
 					localStorage.setItem('jwt', data.token);
 					localStorage.setItem('user', JSON.stringify(data.user));
+					dispatch({ type: 'USER', payload: data.user });
 					toast({
 						title: 'Siz muvofaqiyatli royxatdan otdingiz',
 						status: 'success',
