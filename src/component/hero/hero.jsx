@@ -13,28 +13,57 @@ import {
 	Image,
 	Stack,
 	Input,
+	Flex,
+	HStack,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import CardItem from './card-item';
 
 export default function Hero() {
+	const [data, setData] = useState([]);
+
+	useEffect(() => {
+		fetch('http://localhost:5000/allpost', {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Uchqun ' + localStorage.getItem('jwt'),
+			},
+		})
+			.then(res => res.json())
+			.then(result => {
+				setData(result.posts);
+			});
+	}, []);
+	console.log(data);
 	return (
 		<Box p='20'>
-			<Card maxW='sm'>
-				<Image
-					src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
-					alt='Green double couch with wooden legs'
-					borderRadius='lg'
-				/>
-				<Stack mt='6' p={3} spacing='3'>
-					<Heading size='md'>Title</Heading>
+			<Flex gap={5}>
+				<Flex flexDirection={'column'} gap={5}>
+					{data.map(item => (
+						<Card key={item._id} maxW='4xl' mx={'auto'}>
+							<Heading fontWeight={'400'} fontFamily={'monospace'} fontSize={'2xl'} p={4}>
+								Author: {item.postedBy.name}
+							</Heading>
+							<Image src={item.photo} alt={item._id} borderRadius='lg' />
+							<Stack mt='2' p={2} spacing='3'>
+								<Heading fontSize={'4xl'} size='md'>
+									{item.title}
+								</Heading>
 
-					<Text fontSize='2xl'>It's my post</Text>
+								<Text fontSize='xl'>{item.body}</Text>
+							</Stack>
+							<CardFooter>
+								<Input type='text' variant='flushed' placeholder='Add a comment...' />
+							</CardFooter>
+						</Card>
+					))}
+				</Flex>
+				<Stack>
+					{data.map(item => (
+						<CardItem {...item} />
+					))}
 				</Stack>
-				{/* <Divider /> */}
-				<CardFooter>
-					<Input type='text' variant='flushed' placeholder='Message...' />
-				</CardFooter>
-			</Card>
+			</Flex>
 		</Box>
 	);
 }
