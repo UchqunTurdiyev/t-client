@@ -22,11 +22,13 @@ import { useTranslation } from 'react-i18next';
 import { language } from '@/config/constants';
 import { useContext } from 'react';
 import { UserContext } from '@/app/providers';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
 	const { toggleColorMode, colorMode } = useColorMode();
 	const { t, i18n } = useTranslation();
-	const { state } = useContext(UserContext);
+	const { state, dispatch } = useContext(UserContext);
+	const router = useRouter();
 
 	const renderNav = () => {
 		if (state) {
@@ -69,11 +71,20 @@ export default function Header() {
 				)}
 			</Link>
 			<HStack gap={8}>
-				<Flex display={{ base: 'none', md: 'flex' }} gap={7}>
+				<Flex display={{ base: 'none', md: 'flex' }} gap={7} alignItems={'center'}>
 					<Link href={'/'}>{t('home', { ns: 'layout' })}</Link>
 					<Link href={'/about'}>{t('about', { ns: 'layout' })}</Link>
 					{renderNav()}
 					<Link href={'/'}>{t('contact', { ns: 'layout' })}</Link>
+					<Button
+						variant={'ghost'}
+						colorScheme={'facebook'}
+						onClick={() => {
+							localStorage.clear(), dispatch({ type: 'CLEAR' }), router.push('/signin');
+						}}
+					>
+						Logout
+					</Button>
 				</Flex>
 				<HStack display={{ base: 'none', md: 'flex' }}>
 					<Menu>
