@@ -1,7 +1,9 @@
+'use client';
 import { Header } from '@/component';
 import './globals.css';
 import { Montserrat } from 'next/font/google';
 import Providers from './providers';
+import { Component } from 'react';
 
 const monserrat = Montserrat({ subsets: ['latin'] });
 
@@ -16,7 +18,7 @@ export default function RootLayout({ children }) {
 			<body className={monserrat.className}>
 				<Providers children={children}>
 					<Header />
-					{children}
+					<>{children}</>
 					<p>Footer</p>
 				</Providers>
 			</body>

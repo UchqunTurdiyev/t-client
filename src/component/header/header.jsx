@@ -32,14 +32,14 @@ export default function Header() {
 
 	const renderNav = () => {
 		if (state) {
-			if (state.email === 'uchqundev@gmail.com') {
-				return [
-					<>
-						<Link href={'/profile'}>{t('profile', { ns: 'layout' })}</Link>
-						<Link href={'/create-post'}>Maqola yozish</Link>
-					</>,
-				];
-			}
+			return [
+				<>
+					<Link href={'/profile'}>{t('profile', { ns: 'layout' })}</Link>
+					<Link href={'/create-post'}>Maqola yozish</Link>
+				</>,
+			];
+			// if (state.email === 'uchqundev@gmail.com') {
+			// }
 		} else {
 			<Link href={'/signin'}>
 				<Button rightIcon={<FaUserGraduate />} colorScheme='facebook' variant={'outline'}>
@@ -76,7 +76,7 @@ export default function Header() {
 					<Link href={'/about'}>{t('about', { ns: 'layout' })}</Link>
 					{renderNav()}
 					<Link href={'/'}>{t('contact', { ns: 'layout' })}</Link>
-					<Button
+					{/* <Button
 						variant={'ghost'}
 						colorScheme={'facebook'}
 						onClick={() => {
@@ -84,7 +84,7 @@ export default function Header() {
 						}}
 					>
 						Logout
-					</Button>
+					</Button> */}
 				</Flex>
 				<HStack display={{ base: 'none', md: 'flex' }}>
 					<Menu>
