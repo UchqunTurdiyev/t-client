@@ -30,6 +30,10 @@ export default function Header() {
 	const { state, dispatch } = useContext(UserContext);
 	const router = useRouter();
 
+	const logoutHandler = () => {
+		localStorage.clear(), dispatch({ type: 'CLEAR' }), router.push('/signin');
+	};
+
 	const renderNav = () => {
 		if (state) {
 			return [
@@ -76,15 +80,9 @@ export default function Header() {
 					<Link href={'/about'}>{t('about', { ns: 'layout' })}</Link>
 					{renderNav()}
 					<Link href={'/'}>{t('contact', { ns: 'layout' })}</Link>
-					{/* <Button
-						variant={'ghost'}
-						colorScheme={'facebook'}
-						onClick={() => {
-							localStorage.clear(), dispatch({ type: 'CLEAR' }), router.push('/signin');
-						}}
-					>
+					<Button variant={'ghost'} colorScheme={'facebook'} onClick={logoutHandler}>
 						Logout
-					</Button> */}
+					</Button>
 				</Flex>
 				<HStack display={{ base: 'none', md: 'flex' }}>
 					<Menu>
@@ -117,6 +115,9 @@ export default function Header() {
 						colorScheme={'facebook'}
 						variant={'outline'}
 					/>
+					<Button colorScheme={'facebook'} variant={'outline'}>
+						{state?.name.toUpperCase().slice(0, 1)}
+					</Button>
 				</HStack>
 				<Box display={{ base: 'block', md: 'none' }}>
 					<IconButton

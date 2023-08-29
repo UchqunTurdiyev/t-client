@@ -23,6 +23,8 @@ import CardItem from './card-item';
 import { AiFillLike, AiFillDislike } from 'react-icons/ai';
 import { UserContext } from '@/app/providers';
 import { TfiCommentAlt } from 'react-icons/tfi';
+import { RiMailSendLine } from 'react-icons/ri';
+import { TiDeleteOutline } from 'react-icons/ti';
 
 export default function Hero() {
 	const [data, setData] = useState([]);
@@ -119,18 +121,33 @@ export default function Hero() {
 			.catch(err => console.log(err));
 	};
 
+	const deletePost = postId => {
+		fetch(`http://localhost:5000/deletepost/${postId}`, {
+			method: 'delete',
+			headers: {
+				Authorization: 'Uchqun ' + localStorage.getItem('jwt'),
+			},
+		})
+			.then(res => res.json())
+			.then(result => {
+				const newData = data.filter(s => s._id !== result);
+				setData(newData);
+			})
+			.then(err => console.log(err));
+	};
+
 	return (
-		<Box px='20' py={10}>
-			<Flex gap={5}>
-				<Flex flexDirection={'column'} gap={5}>
+		<Box w={'80%'} m={'auto'} py={6}>
+			<Flex gap={10} justifyContent={'space-between'}>
+				<Flex w={'full'} flexDirection={'column'} gap={5}>
 					{data
-						.map(item => (
-							<Card key={item._id} maxW='4xl' mx={'auto'}>
+						?.map(item => (
+							<Card key={item._id} w='full' mx={'auto'}>
 								<Heading fontWeight={'400'} fontFamily={'monospace'} fontSize={'2xl'} p={4}>
 									Author: {item.postedBy.name}
 								</Heading>
 								<Image w={'full'} h={'420px'} objectFit={'cover'} src={item.photo} alt={item._id} borderRadius='lg' />
-								<Stack mt='2' p={2} spacing='3'>
+								<Stack mt='1' px={2} spacing='3'>
 									<Flex alignItems={'center'} justifyContent={'space-between'}>
 										<Heading fontSize={'4xl'} size='md'>
 											{item.title}
@@ -186,16 +203,25 @@ export default function Hero() {
 										}}
 									>
 										<Input type='text' variant='flushed' placeholder='Add a comment...' />
-										<Button type='submit' mt={2}>
-											send message
-										</Button>
+										<Flex justifyContent={'space-between'} alignItems={'center'} mt={2}>
+											<Button type='submit' rightIcon={<RiMailSendLine />}>
+												Send message
+											</Button>
+											{item.postedBy._id === state._id && (
+												<Button onClick={() => deletePost(item._id)} rightIcon={<TiDeleteOutline size={'22px'} />}>
+													Delete post
+												</Button>
+											)}
+										</Flex>
 									</form>
 								</CardFooter>
 							</Card>
 						))
 						.reverse()}
 				</Flex>
-				<Stack>{data.map(item => <CardItem key={item._id} {...item} />).reverse()}</Stack>
+				<Stack>
+					<CardItem />
+				</Stack>
 			</Flex>
 		</Box>
 	);
