@@ -1,10 +1,12 @@
 'use client';
+import { UserContext } from '@/app/providers';
 import { Box, Flex, Grid, GridItem, HStack, Heading, Image, Text } from '@chakra-ui/react';
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 export default function Profile() {
 	const [post, setPost] = useState([]);
+	const { state, dispatch } = useContext(UserContext);
 
 	useEffect(() => {
 		fetch('http://localhost:5000/mypost', {
@@ -17,7 +19,6 @@ export default function Profile() {
 				setPost(result.myPost);
 			});
 	}, []);
-	console.log(post);
 	return (
 		<Box className='w-full h-full '>
 			<Flex w={'80%'} mx={'auto'} justifyContent={'space-between'} className='border-b-2 border-gray-600 py-10'>
@@ -29,7 +30,7 @@ export default function Profile() {
 					/>
 				</Box>
 				<Flex flexDirection={'column'}>
-					<Heading>Uchqun Turdiev</Heading>
+					<Heading>{state ? state.name : 'loading...'}</Heading>
 					<HStack my={6} gap={6}>
 						<Text>Posts: 99</Text>
 						<Text>Following: 99</Text>

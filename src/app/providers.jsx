@@ -22,7 +22,6 @@ export default function Providers({ children }) {
 
 		if (user) {
 			dispatch({ type: 'USER', payload: user });
-			router.push('/');
 		} else {
 			router.push('/signin');
 		}

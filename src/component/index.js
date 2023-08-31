@@ -5,3 +5,4 @@ export { default as SignIn } from './auth/signIn';
 export { default as SignUp } from './auth/signUp';
 export { default as Profile } from './profile/profile';
 export { default as CreatePost } from './create-post/create-post';
+export { default as UserProfile } from './userProfile/user-profile';
